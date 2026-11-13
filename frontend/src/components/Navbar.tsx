@@ -27,6 +27,10 @@ export const Navbar: React.FC = () => {
 
   if (!isAuthenticated) return null;
 
+  const isQueuesActive =
+    location.pathname === '/queues' ||
+    (location.pathname.startsWith('/queues/') && !location.pathname.includes('/analytics'));
+
   return (
     <AppBar
       position="sticky"
@@ -38,7 +42,7 @@ export const Navbar: React.FC = () => {
       }}
     >
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ justifyContent: 'space-between', height: 70 }}>
+        <Toolbar disableGutters sx={{ justifyContent: 'space-between', height: 72 }}>
           {/* Logo & Brand */}
           <Box
             sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', gap: 1.5 }}
@@ -46,44 +50,44 @@ export const Navbar: React.FC = () => {
           >
             <Box
               sx={{
-                width: 42,
-                height: 42,
+                width: 44,
+                height: 44,
                 borderRadius: 2.5,
-                background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
+                background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#fff',
-                boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)',
+                boxShadow: '0 4px 14px rgba(37, 99, 235, 0.25)',
               }}
             >
               <QueueIcon />
             </Box>
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.1 }}>
-                Rugas <span style={{ color: '#2563eb' }}>Queue</span>
+              <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+                Queue <span style={{ color: '#2563eb' }}>Management</span>
               </Typography>
               <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                Enterprise Queue Suite
+                Operations & Token Control
               </Typography>
             </Box>
           </Box>
 
           {/* Navigation Links */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <Button
               startIcon={<ListIcon />}
               onClick={() => navigate('/queues')}
-              variant={location.pathname === '/queues' || location.pathname.startsWith('/queues/') ? 'contained' : 'text'}
+              variant={isQueuesActive ? 'contained' : 'text'}
               sx={{
-                backgroundColor:
-                  location.pathname === '/queues' || (location.pathname.startsWith('/queues/') && !location.pathname.includes('/analytics'))
-                    ? 'primary.main'
-                    : 'transparent',
-                color:
-                  location.pathname === '/queues' || (location.pathname.startsWith('/queues/') && !location.pathname.includes('/analytics'))
-                    ? '#fff'
-                    : 'text.primary',
+                borderRadius: 2,
+                px: 2,
+                py: 1,
+                backgroundColor: isQueuesActive ? '#2563eb' : 'transparent',
+                color: isQueuesActive ? '#fff' : '#475569',
+                '&:hover': {
+                  backgroundColor: isQueuesActive ? '#1d4ed8' : '#f1f5f9',
+                },
               }}
             >
               Queues
@@ -93,8 +97,14 @@ export const Navbar: React.FC = () => {
               onClick={() => navigate('/analytics')}
               variant={location.pathname === '/analytics' ? 'contained' : 'text'}
               sx={{
-                backgroundColor: location.pathname === '/analytics' ? 'primary.main' : 'transparent',
-                color: location.pathname === '/analytics' ? '#fff' : 'text.primary',
+                borderRadius: 2,
+                px: 2,
+                py: 1,
+                backgroundColor: location.pathname === '/analytics' ? '#2563eb' : 'transparent',
+                color: location.pathname === '/analytics' ? '#fff' : '#475569',
+                '&:hover': {
+                  backgroundColor: location.pathname === '/analytics' ? '#1d4ed8' : '#f1f5f9',
+                },
               }}
             >
               Analytics
@@ -107,9 +117,9 @@ export const Navbar: React.FC = () => {
               <Avatar
                 sx={{
                   bgcolor: '#2563eb',
-                  width: 38,
-                  height: 38,
-                  fontSize: 14,
+                  width: 40,
+                  height: 40,
+                  fontSize: 15,
                   fontWeight: 700,
                 }}
               >
@@ -123,7 +133,7 @@ export const Navbar: React.FC = () => {
                   label="Manager"
                   size="small"
                   sx={{
-                    height: 18,
+                    height: 20,
                     fontSize: 10,
                     fontWeight: 700,
                     backgroundColor: '#dbeafe',
@@ -138,11 +148,11 @@ export const Navbar: React.FC = () => {
                   logout();
                   navigate('/login');
                 }}
-                color="default"
                 sx={{
                   border: '1px solid #e2e8f0',
                   borderRadius: 2,
-                  '&:hover': { bgcolor: '#fee2e2', color: '#ef4444' },
+                  p: 1,
+                  '&:hover': { bgcolor: '#fee2e2', color: '#ef4444', borderColor: '#fca5a5' },
                 }}
               >
                 <LogoutIcon fontSize="small" />
@@ -154,4 +164,3 @@ export const Navbar: React.FC = () => {
     </AppBar>
   );
 };
-

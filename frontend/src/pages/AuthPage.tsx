@@ -10,7 +10,7 @@ import {
   Tab,
   Alert,
   Paper,
-  Divider,
+  CircularProgress,
 } from '@mui/material';
 import {
   ConfirmationNumber as QueueIcon,
@@ -49,7 +49,7 @@ export const AuthPage: React.FC = () => {
           return;
         }
         await register(username, password, fullName);
-        enqueueSnackbar('Account created successfully!', { variant: 'success' });
+        enqueueSnackbar('Manager account created successfully!', { variant: 'success' });
       }
       navigate('/queues');
     } catch (err: any) {
@@ -68,43 +68,44 @@ export const AuthPage: React.FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'radial-gradient(circle at 10% 20%, rgb(239, 246, 255) 0%, rgb(248, 250, 252) 90%)',
+        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
         p: 2,
       }}
     >
       <Card
         sx={{
-          maxWidth: 450,
+          maxWidth: 460,
           width: '100%',
-          p: { xs: 2, sm: 3 },
+          p: { xs: 2.5, sm: 3.5 },
           borderRadius: 4,
-          boxShadow: '0 20px 40px rgba(0,0,0,0.06)',
+          boxShadow: '0 20px 45px rgba(15, 23, 42, 0.08)',
+          border: '1px solid #e2e8f0',
         }}
       >
-        <CardContent>
+        <CardContent sx={{ p: 0 }}>
           {/* Header */}
           <Box sx={{ textAlign: 'center', mb: 3 }}>
             <Box
               sx={{
-                width: 56,
-                height: 56,
+                width: 60,
+                height: 60,
                 borderRadius: 3,
-                background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
+                background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#fff',
                 mb: 1.5,
-                boxShadow: '0 8px 16px rgba(37, 99, 235, 0.25)',
+                boxShadow: '0 8px 20px rgba(37, 99, 235, 0.25)',
               }}
             >
-              <QueueIcon fontSize="large" />
+              <QueueIcon sx={{ fontSize: 32 }} />
             </Box>
-            <Typography variant="h5" sx={{ fontWeight: 800 }}>
-              Queue Manager Portal
+            <Typography variant="h5" sx={{ fontWeight: 800, letterSpacing: '-0.02em' }}>
+              Queue Management
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Rugas Queue Operations & Token Dispatch
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+              Manager Control Portal & Token Operations
             </Typography>
           </Box>
 
@@ -123,14 +124,19 @@ export const AuthPage: React.FC = () => {
               }
             }}
             variant="fullWidth"
-            sx={{ mb: 3, borderBottom: 1, borderColor: 'divider' }}
+            sx={{
+              mb: 3,
+              borderBottom: 1,
+              borderColor: 'divider',
+              '& .MuiTab-root': { fontWeight: 700, py: 1.5 },
+            }}
           >
-            <Tab icon={<LoginIcon />} iconPosition="start" label="Login" />
-            <Tab icon={<RegisterIcon />} iconPosition="start" label="Sign Up" />
+            <Tab icon={<LoginIcon />} iconPosition="start" label="Sign In" />
+            <Tab icon={<RegisterIcon />} iconPosition="start" label="Register" />
           </Tabs>
 
           {errorMsg && (
-            <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
+            <Alert severity="error" sx={{ mb: 2.5, borderRadius: 2 }}>
               {errorMsg}
             </Alert>
           )}
@@ -140,7 +146,7 @@ export const AuthPage: React.FC = () => {
               <TextField
                 fullWidth
                 label="Full Name"
-                placeholder="e.g. John Doe"
+                placeholder="e.g. Operations Lead"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 margin="normal"
@@ -180,16 +186,20 @@ export const AuthPage: React.FC = () => {
               disabled={loading}
               sx={{
                 mt: 3,
-                py: 1.4,
+                py: 1.5,
                 fontSize: 16,
+                fontWeight: 700,
                 background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
+                boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)',
               }}
             >
-              {loading
-                ? 'Processing...'
-                : tabIndex === 0
-                ? 'Sign In as Manager'
-                : 'Create Manager Account'}
+              {loading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : tabIndex === 0 ? (
+                'Sign In'
+              ) : (
+                'Create Account'
+              )}
             </Button>
           </form>
 
@@ -199,15 +209,15 @@ export const AuthPage: React.FC = () => {
               sx={{
                 mt: 3,
                 p: 2,
-                borderRadius: 2,
+                borderRadius: 2.5,
                 bgcolor: '#f8fafc',
-                borderStyle: 'dashed',
+                border: '1px dashed #cbd5e1',
               }}
             >
-              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 0.5 }}>
-                PRECONFIGURED DEMO CREDENTIALS:
+              <Typography variant="caption" sx={{ fontWeight: 800, color: '#475569', display: 'block', mb: 0.5 }}>
+                DEMO CREDENTIALS:
               </Typography>
-              <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: 13 }}>
+              <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: 13, color: '#0f172a' }}>
                 Username: <strong>manager</strong> &nbsp;|&nbsp; Password: <strong>manager123</strong>
               </Typography>
             </Paper>
@@ -217,4 +227,3 @@ export const AuthPage: React.FC = () => {
     </Box>
   );
 };
-
