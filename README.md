@@ -108,3 +108,4 @@ Frontend will start on `http://localhost:5173` (or the indicated Vite port).
 2. **Stateless Security**: Standard BCrypt hashed passwords and stateless Bearer JWT verification filter.
 3. **Queue Integrity & Atomic Re-indexing**: Token position manipulation (`UP`/`DOWN`, `CANCEL`, `ASSIGN_TOP`) executes inside `@Transactional` boundaries to guarantee zero duplicate position conflicts.
 4. **Resilient Production Packaging**: Frontend uses multi-stage Docker builds with Nginx proxying and routing fallbacks (`try_files $uri /index.html`), preventing SPA 404 reload issues.
+
