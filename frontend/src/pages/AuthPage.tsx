@@ -9,6 +9,7 @@ import {
   Tabs,
   Tab,
   Alert,
+  Paper,
   CircularProgress,
 } from '@mui/material';
 import {
@@ -22,8 +23,8 @@ import { useSnackbar } from 'notistack';
 
 export const AuthPage: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('manager');
+  const [password, setPassword] = useState('manager123');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -48,7 +49,7 @@ export const AuthPage: React.FC = () => {
           return;
         }
         await register(username, password, fullName);
-        enqueueSnackbar('Manager account registered successfully!', { variant: 'success' });
+        enqueueSnackbar('Account created successfully!', { variant: 'success' });
       }
       navigate('/queues');
     } catch (err: any) {
@@ -64,50 +65,47 @@ export const AuthPage: React.FC = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        width: '100vw',
-        margin: 0,
-        padding: 0,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%)',
+        background: 'radial-gradient(circle at 10% 20%, rgb(239, 246, 255) 0%, rgb(248, 250, 252) 90%)',
+        p: 2,
       }}
     >
       <Card
         sx={{
-          maxWidth: 460,
-          width: '92%',
-          p: { xs: 3, sm: 4 },
+          maxWidth: 450,
+          width: '100%',
+          p: { xs: 2.5, sm: 3.5 },
           borderRadius: 4,
-          boxShadow: '0 25px 50px -12px rgba(15, 23, 42, 0.15)',
-          border: 'none',
-          backgroundColor: '#ffffff',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.06)',
+          border: '1px solid #e2e8f0',
         }}
       >
         <CardContent sx={{ p: 0 }}>
           {/* Header */}
-          <Box sx={{ textAlign: 'center', mb: 3.5 }}>
+          <Box sx={{ textAlign: 'center', mb: 3 }}>
             <Box
               sx={{
-                width: 64,
-                height: 64,
+                width: 56,
+                height: 56,
                 borderRadius: 3,
                 background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#fff',
-                mb: 2,
-                boxShadow: '0 10px 25px rgba(37, 99, 235, 0.3)',
+                mb: 1.5,
+                boxShadow: '0 8px 16px rgba(37, 99, 235, 0.25)',
               }}
             >
-              <QueueIcon sx={{ fontSize: 34 }} />
+              <QueueIcon fontSize="large" />
             </Box>
-            <Typography variant="h5" sx={{ fontWeight: 800, letterSpacing: '-0.02em', color: '#0f172a' }}>
-              Queue Management
+            <Typography variant="h5" sx={{ fontWeight: 800 }}>
+              Queue Manager Portal
             </Typography>
-            <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontWeight: 500 }}>
-              {tabIndex === 0 ? 'Sign in to access your queues' : 'Register a new manager account'}
+            <Typography variant="body2" color="text.secondary">
+              Queue Operations & Token Dispatch
             </Typography>
           </Box>
 
@@ -116,40 +114,24 @@ export const AuthPage: React.FC = () => {
             onChange={(_, val) => {
               setTabIndex(val);
               setErrorMsg('');
-              setUsername('');
-              setPassword('');
-              setFullName('');
+              if (val === 0) {
+                setUsername('manager');
+                setPassword('manager123');
+              } else {
+                setUsername('');
+                setPassword('');
+                setFullName('');
+              }
             }}
             variant="fullWidth"
-            sx={{
-              mb: 3,
-              borderRadius: 2,
-              bgcolor: '#f1f5f9',
-              p: 0.5,
-              '& .MuiTabs-indicator': {
-                display: 'none',
-              },
-              '& .MuiTab-root': {
-                fontWeight: 700,
-                borderRadius: 1.5,
-                py: 1.2,
-                minHeight: 44,
-                color: '#64748b',
-                transition: 'all 0.2s',
-                '&.Mui-selected': {
-                  color: '#2563eb',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                },
-              },
-            }}
+            sx={{ mb: 3, borderBottom: 1, borderColor: 'divider' }}
           >
-            <Tab icon={<LoginIcon sx={{ fontSize: 20 }} />} iconPosition="start" label="Sign In" />
-            <Tab icon={<RegisterIcon sx={{ fontSize: 20 }} />} iconPosition="start" label="Register" />
+            <Tab icon={<LoginIcon />} iconPosition="start" label="Login" />
+            <Tab icon={<RegisterIcon />} iconPosition="start" label="Sign Up" />
           </Tabs>
 
           {errorMsg && (
-            <Alert severity="error" sx={{ mb: 2.5, borderRadius: 2 }}>
+            <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
               {errorMsg}
             </Alert>
           )}
@@ -159,7 +141,7 @@ export const AuthPage: React.FC = () => {
               <TextField
                 fullWidth
                 label="Full Name"
-                placeholder="Enter your full name"
+                placeholder="e.g. John Doe"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 margin="normal"
@@ -171,7 +153,7 @@ export const AuthPage: React.FC = () => {
             <TextField
               fullWidth
               label="Username"
-              placeholder="Enter your username"
+              placeholder="e.g. manager"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               margin="normal"
@@ -198,28 +180,42 @@ export const AuthPage: React.FC = () => {
               size="large"
               disabled={loading}
               sx={{
-                mt: 3.5,
-                py: 1.5,
+                mt: 3,
+                py: 1.4,
                 fontSize: 16,
                 fontWeight: 700,
-                borderRadius: 2.5,
                 background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
-                boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #1d4ed8, #1e40af)',
-                  boxShadow: '0 6px 18px rgba(37, 99, 235, 0.45)',
-                },
               }}
             >
               {loading ? (
                 <CircularProgress size={24} color="inherit" />
               ) : tabIndex === 0 ? (
-                'Sign In to Dashboard'
+                'Sign In as Manager'
               ) : (
                 'Create Manager Account'
               )}
             </Button>
           </form>
+
+          {tabIndex === 0 && (
+            <Paper
+              variant="outlined"
+              sx={{
+                mt: 3,
+                p: 2,
+                borderRadius: 2,
+                bgcolor: '#f8fafc',
+                borderStyle: 'dashed',
+              }}
+            >
+              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 0.5 }}>
+                PRECONFIGURED DEMO CREDENTIALS:
+              </Typography>
+              <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: 13 }}>
+                Username: <strong>manager</strong> &nbsp;|&nbsp; Password: <strong>manager123</strong>
+              </Typography>
+            </Paper>
+          )}
         </CardContent>
       </Card>
     </Box>
