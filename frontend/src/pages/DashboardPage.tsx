@@ -5,7 +5,6 @@ import {
   Typography,
   Grid,
   Card,
-  CardContent,
   CircularProgress,
   IconButton,
   Tooltip,
@@ -22,15 +21,12 @@ import {
   Timer as WaitIcon,
   PeopleAlt as QueueIcon,
   CheckCircle as SuccessIcon,
-  CancelOutlined as CancelIcon,
-  Refresh as RefreshIcon,
   TrendingUp as TrendIcon,
+  Refresh as RefreshIcon,
 } from '@mui/icons-material';
 import {
   AreaChart,
   Area,
-  BarChart,
-  Bar,
   PieChart,
   Pie,
   Cell,
@@ -78,19 +74,27 @@ export const DashboardPage: React.FC = () => {
     : [];
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4, px: { xs: 2, sm: 3, md: 4 } }}>
       {/* Title */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Box>
-          <Typography variant="h4" sx={{ fontWeight: 800 }}>
-            Analytics & Queue Intelligence
+          <Typography variant="h4" sx={{ fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em' }}>
+            Queue Analytics & Intelligence
           </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Live metrics, wait time trends, customer throughput, and queue efficiency
+          <Typography variant="body1" sx={{ color: '#64748b', mt: 0.5 }}>
+            Real-time wait metrics, throughput trends, and queue performance breakdown
           </Typography>
         </Box>
         <Tooltip title="Refresh Dashboard">
-          <IconButton onClick={fetchAnalytics} sx={{ border: '1px solid #e2e8f0' }}>
+          <IconButton
+            onClick={fetchAnalytics}
+            sx={{
+              backgroundColor: '#ffffff',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+              p: 1.2,
+              '&:hover': { backgroundColor: '#f8fafc' },
+            }}
+          >
             <RefreshIcon />
           </IconButton>
         </Tooltip>
@@ -105,69 +109,129 @@ export const DashboardPage: React.FC = () => {
           {/* KPI Stat Cards */}
           <Grid container spacing={3} sx={{ mb: 4 }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Card sx={{ p: 2.5, borderLeft: '4px solid #2563eb' }}>
+              <Card
+                sx={{
+                  p: 3,
+                  borderRadius: 3,
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+                  border: 'none',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-3px)',
+                    boxShadow: '0 10px 25px rgba(37, 99, 235, 0.1)',
+                  },
+                }}
+              >
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography variant="subtitle2" color="text.secondary" sx={{ fontWeight: 700 }}>
-                    WAITING IN QUEUES
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#64748b', textTransform: 'uppercase', fontSize: 12, letterSpacing: '0.05em' }}>
+                    Waiting In Queues
                   </Typography>
-                  <QueueIcon sx={{ color: '#2563eb' }} />
+                  <Box sx={{ width: 42, height: 42, borderRadius: 2.5, bgcolor: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <QueueIcon sx={{ color: '#2563eb', fontSize: 22 }} />
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 900, my: 1, color: '#1e293b' }}>
+                <Typography variant="h3" sx={{ fontWeight: 800, my: 1.5, color: '#0f172a' }}>
                   {data.totalWaiting}
                 </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Active customer tokens in line
+                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 500 }}>
+                  Active customer tokens currently waiting
                 </Typography>
               </Card>
             </Grid>
 
             <Grid item xs={12} sm={6} md={3}>
-              <Card sx={{ p: 2.5, borderLeft: '4px solid #f59e0b' }}>
+              <Card
+                sx={{
+                  p: 3,
+                  borderRadius: 3,
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+                  border: 'none',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-3px)',
+                    boxShadow: '0 10px 25px rgba(245, 158, 11, 0.1)',
+                  },
+                }}
+              >
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography variant="subtitle2" color="text.secondary" sx={{ fontWeight: 700 }}>
-                    AVERAGE WAIT TIME
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#64748b', textTransform: 'uppercase', fontSize: 12, letterSpacing: '0.05em' }}>
+                    Average Wait Time
                   </Typography>
-                  <WaitIcon sx={{ color: '#f59e0b' }} />
+                  <Box sx={{ width: 42, height: 42, borderRadius: 2.5, bgcolor: '#fef3c7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <WaitIcon sx={{ color: '#d97706', fontSize: 22 }} />
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 900, my: 1, color: '#1e293b' }}>
-                  {data.averageWaitMinutes} <span style={{ fontSize: 20 }}>mins</span>
+                <Typography variant="h3" sx={{ fontWeight: 800, my: 1.5, color: '#0f172a' }}>
+                  {data.averageWaitMinutes} <span style={{ fontSize: 18, color: '#64748b', fontWeight: 600 }}>mins</span>
                 </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Across all service counters
+                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 500 }}>
+                  Calculated across all service counters
                 </Typography>
               </Card>
             </Grid>
 
             <Grid item xs={12} sm={6} md={3}>
-              <Card sx={{ p: 2.5, borderLeft: '4px solid #10b981' }}>
+              <Card
+                sx={{
+                  p: 3,
+                  borderRadius: 3,
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+                  border: 'none',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-3px)',
+                    boxShadow: '0 10px 25px rgba(16, 185, 129, 0.1)',
+                  },
+                }}
+              >
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography variant="subtitle2" color="text.secondary" sx={{ fontWeight: 700 }}>
-                    TOTAL SERVED
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#64748b', textTransform: 'uppercase', fontSize: 12, letterSpacing: '0.05em' }}>
+                    Total Served
                   </Typography>
-                  <SuccessIcon sx={{ color: '#10b981' }} />
+                  <Box sx={{ width: 42, height: 42, borderRadius: 2.5, bgcolor: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <SuccessIcon sx={{ color: '#10b981', fontSize: 22 }} />
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 900, my: 1, color: '#1e293b' }}>
+                <Typography variant="h3" sx={{ fontWeight: 800, my: 1.5, color: '#0f172a' }}>
                   {data.totalCompleted}
                 </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Avg service: {data.averageServiceMinutes} mins
+                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 500 }}>
+                  Avg service duration: {data.averageServiceMinutes} mins
                 </Typography>
               </Card>
             </Grid>
 
             <Grid item xs={12} sm={6} md={3}>
-              <Card sx={{ p: 2.5, borderLeft: '4px solid #7c3aed' }}>
+              <Card
+                sx={{
+                  p: 3,
+                  borderRadius: 3,
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+                  border: 'none',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-3px)',
+                    boxShadow: '0 10px 25px rgba(124, 58, 237, 0.1)',
+                  },
+                }}
+              >
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography variant="subtitle2" color="text.secondary" sx={{ fontWeight: 700 }}>
-                    TOTAL TOKENS CREATED
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#64748b', textTransform: 'uppercase', fontSize: 12, letterSpacing: '0.05em' }}>
+                    Total Tokens Created
                   </Typography>
-                  <TrendIcon sx={{ color: '#7c3aed' }} />
+                  <Box sx={{ width: 42, height: 42, borderRadius: 2.5, bgcolor: '#f5f3ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <TrendIcon sx={{ color: '#7c3aed', fontSize: 22 }} />
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 900, my: 1, color: '#1e293b' }}>
+                <Typography variant="h3" sx={{ fontWeight: 800, my: 1.5, color: '#0f172a' }}>
                   {data.totalTokens}
                 </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {data.totalCancelled} cancelled tokens
+                <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 500 }}>
+                  {data.totalCancelled} cancelled tokens recorded
                 </Typography>
               </Card>
             </Grid>
@@ -177,11 +241,11 @@ export const DashboardPage: React.FC = () => {
           <Grid container spacing={3} sx={{ mb: 4 }}>
             {/* Hourly Wait Times & Volume */}
             <Grid item xs={12} lg={8}>
-              <Card sx={{ p: 3, height: '100%' }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+              <Card sx={{ p: 3.5, height: '100%', borderRadius: 3, border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.04)' }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>
                   Wait Time Trends & Hourly Activity
                 </Typography>
-                <Typography variant="caption" color="text.secondary" sx={{ mb: 3, display: 'block' }}>
+                <Typography variant="body2" sx={{ color: '#64748b', mb: 3 }}>
                   Average customer wait duration (minutes) and token creation volume
                 </Typography>
                 <Box sx={{ width: '100%', height: 320 }}>
@@ -222,11 +286,11 @@ export const DashboardPage: React.FC = () => {
 
             {/* Token Status Distribution */}
             <Grid item xs={12} lg={4}>
-              <Card sx={{ p: 3, height: '100%' }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+              <Card sx={{ p: 3.5, height: '100%', borderRadius: 3, border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.04)' }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>
                   Status Distribution
                 </Typography>
-                <Typography variant="caption" color="text.secondary" sx={{ mb: 2, display: 'block' }}>
+                <Typography variant="body2" sx={{ color: '#64748b', mb: 3 }}>
                   Active vs completed vs cancelled distribution
                 </Typography>
                 <Box sx={{ width: '100%', height: 320 }}>
@@ -255,63 +319,74 @@ export const DashboardPage: React.FC = () => {
           </Grid>
 
           {/* Queue Performance Comparison Table */}
-          <Card sx={{ p: 3 }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
+          <Card sx={{ p: 3.5, borderRadius: 3, border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.04)' }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>
               Queue Performance Breakdown
             </Typography>
-            <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #e2e8f0' }}>
+            <Typography variant="body2" sx={{ color: '#64748b', mb: 2.5 }}>
+              Summary metrics per registered queue
+            </Typography>
+            <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #e2e8f0', borderRadius: 2 }}>
               <Table>
                 <TableHead sx={{ bgcolor: '#f8fafc' }}>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 700 }}>Queue Name</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 700 }}>Waiting</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 700 }}>Serving</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 700 }}>Completed</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 700 }}>Cancelled</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 700 }}>Avg Wait Time</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 700 }}>Avg Service Time</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: '#475569' }}>Queue Name</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 700, color: '#475569' }}>Waiting</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 700, color: '#475569' }}>Serving</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 700, color: '#475569' }}>Completed</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 700, color: '#475569' }}>Cancelled</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 700, color: '#475569' }}>Avg Wait Time</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 700, color: '#475569' }}>Avg Service Time</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data.queueMetrics.map((qm) => (
-                    <TableRow key={qm.queueId} hover>
-                      <TableCell sx={{ fontWeight: 600 }}>{qm.queueName}</TableCell>
-                      <TableCell align="center">
-                        <Chip
-                          label={qm.waitingCount}
-                          size="small"
-                          sx={{ bgcolor: '#eff6ff', color: '#2563eb', fontWeight: 700 }}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <Chip
-                          label={qm.servingCount}
-                          size="small"
-                          sx={{ bgcolor: '#f0fdf4', color: '#16a34a', fontWeight: 700 }}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <Chip
-                          label={qm.completedCount}
-                          size="small"
-                          sx={{ bgcolor: '#faf5ff', color: '#7c3aed', fontWeight: 700 }}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <Chip
-                          label={qm.cancelledCount}
-                          size="small"
-                          sx={{ bgcolor: '#fef2f2', color: '#ef4444', fontWeight: 700 }}
-                        />
-                      </TableCell>
-                      <TableCell align="center" sx={{ fontWeight: 700 }}>
-                        {qm.averageWaitMinutes} min
-                      </TableCell>
-                      <TableCell align="center" sx={{ fontWeight: 700 }}>
-                        {qm.averageServiceMinutes} min
+                  {data.queueMetrics.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={7} align="center" sx={{ py: 3, color: '#64748b' }}>
+                        No queues recorded yet. Create a queue to see performance analytics.
                       </TableCell>
                     </TableRow>
-                  ))}
+                  ) : (
+                    data.queueMetrics.map((qm) => (
+                      <TableRow key={qm.queueId} hover>
+                        <TableCell sx={{ fontWeight: 600, color: '#0f172a' }}>{qm.queueName}</TableCell>
+                        <TableCell align="center">
+                          <Chip
+                            label={qm.waitingCount}
+                            size="small"
+                            sx={{ bgcolor: '#eff6ff', color: '#2563eb', fontWeight: 700 }}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <Chip
+                            label={qm.servingCount}
+                            size="small"
+                            sx={{ bgcolor: '#ecfdf5', color: '#10b981', fontWeight: 700 }}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <Chip
+                            label={qm.completedCount}
+                            size="small"
+                            sx={{ bgcolor: '#f5f3ff', color: '#7c3aed', fontWeight: 700 }}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <Chip
+                            label={qm.cancelledCount}
+                            size="small"
+                            sx={{ bgcolor: '#fef2f2', color: '#ef4444', fontWeight: 700 }}
+                          />
+                        </TableCell>
+                        <TableCell align="center" sx={{ fontWeight: 700, color: '#0f172a' }}>
+                          {qm.averageWaitMinutes} min
+                        </TableCell>
+                        <TableCell align="center" sx={{ fontWeight: 700, color: '#0f172a' }}>
+                          {qm.averageServiceMinutes} min
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -321,4 +396,3 @@ export const DashboardPage: React.FC = () => {
     </Container>
   );
 };
-
