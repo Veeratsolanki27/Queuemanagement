@@ -9,7 +9,6 @@ import {
   Tabs,
   Tab,
   Alert,
-  Paper,
   CircularProgress,
 } from '@mui/material';
 import {
@@ -22,9 +21,10 @@ import { useAuth } from '../context/AuthContext';
 import { useSnackbar } from 'notistack';
 
 export const AuthPage: React.FC = () => {
-  const [tabIndex, setTabIndex] = useState(0);
-  const [username, setUsername] = useState('manager');
-  const [password, setPassword] = useState('manager123');
+  // Default to Sign Up (tabIndex 1) so new users register first, or they can switch to Login (0)
+  const [tabIndex, setTabIndex] = useState(1);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -42,6 +42,7 @@ export const AuthPage: React.FC = () => {
       if (tabIndex === 0) {
         await login(username, password);
         enqueueSnackbar('Welcome back! Logged in successfully.', { variant: 'success' });
+        navigate('/queues');
       } else {
         if (!fullName.trim()) {
           setErrorMsg('Full name is required for registration');
@@ -49,11 +50,11 @@ export const AuthPage: React.FC = () => {
           return;
         }
         await register(username, password, fullName);
-        enqueueSnackbar('Account created successfully!', { variant: 'success' });
+        enqueueSnackbar('Account created successfully! Welcome to your dashboard.', { variant: 'success' });
+        navigate('/queues');
       }
-      navigate('/queues');
     } catch (err: any) {
-      const msg = err.response?.data?.message || err.message || 'Authentication failed. Please verify credentials.';
+      const msg = err.response?.data?.message || err.message || 'Authentication failed. Please verify your details.';
       setErrorMsg(msg);
       enqueueSnackbar(msg, { variant: 'error' });
     } finally {
@@ -114,20 +115,15 @@ export const AuthPage: React.FC = () => {
             onChange={(_, val) => {
               setTabIndex(val);
               setErrorMsg('');
-              if (val === 0) {
-                setUsername('manager');
-                setPassword('manager123');
-              } else {
-                setUsername('');
-                setPassword('');
-                setFullName('');
-              }
+              setUsername('');
+              setPassword('');
+              setFullName('');
             }}
             variant="fullWidth"
             sx={{ mb: 3, borderBottom: 1, borderColor: 'divider' }}
           >
-            <Tab icon={<LoginIcon />} iconPosition="start" label="Login" />
             <Tab icon={<RegisterIcon />} iconPosition="start" label="Sign Up" />
+            <Tab icon={<LoginIcon />} iconPosition="start" label="Login" />
           </Tabs>
 
           {errorMsg && (
@@ -137,7 +133,7 @@ export const AuthPage: React.FC = () => {
           )}
 
           <form onSubmit={handleSubmit}>
-            {tabIndex === 1 && (
+            {tabIndex === 0 && (
               <TextField
                 fullWidth
                 label="Full Name"
@@ -153,7 +149,7 @@ export const AuthPage: React.FC = () => {
             <TextField
               fullWidth
               label="Username"
-              placeholder="e.g. manager"
+              placeholder="Choose a username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               margin="normal"
@@ -190,32 +186,12 @@ export const AuthPage: React.FC = () => {
               {loading ? (
                 <CircularProgress size={24} color="inherit" />
               ) : tabIndex === 0 ? (
-                'Sign In as Manager'
-              ) : (
                 'Create Manager Account'
+              ) : (
+                'Sign In as Manager'
               )}
             </Button>
           </form>
-
-          {tabIndex === 0 && (
-            <Paper
-              variant="outlined"
-              sx={{
-                mt: 3,
-                p: 2,
-                borderRadius: 2,
-                bgcolor: '#f8fafc',
-                borderStyle: 'dashed',
-              }}
-            >
-              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 0.5 }}>
-                PRECONFIGURED DEMO CREDENTIALS:
-              </Typography>
-              <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: 13 }}>
-                Username: <strong>manager</strong> &nbsp;|&nbsp; Password: <strong>manager123</strong>
-              </Typography>
-            </Paper>
-          )}
         </CardContent>
       </Card>
     </Box>
