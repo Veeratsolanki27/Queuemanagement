@@ -1,0 +1,19 @@
+# Dependencies & Artifacts
+node_modules/
+dist/
+target/
+*.class
+*.jar
+*.war
+
+# Environment & Secrets
+.env
+.env.local
+
+# IDEs & OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
