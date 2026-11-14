@@ -4,14 +4,19 @@ import axios from 'axios';
 // When running in production (e.g. on Netlify), use the relative path '/api/v1' so Netlify proxies directly
 // or use the explicit VITE_API_URL if provided.
 const getBaseUrl = (): string => {
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
+  let url = import.meta.env.VITE_API_URL;
+  if (url) {
+    url = url.trim().replace(/\/+$/, '');
+    if (!url.endsWith('/api/v1')) {
+      url = `${url}/api/v1`;
+    }
+    return url;
   }
   // Check if browser is on localhost
   if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
     return 'http://localhost:8080/api/v1';
   }
-  // In production (Netlify), use relative '/api/v1'
+  // In production (Netlify), fallback to relative '/api/v1'
   return '/api/v1';
 };
 
