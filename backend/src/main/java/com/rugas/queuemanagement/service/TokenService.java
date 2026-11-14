@@ -6,7 +6,6 @@ import com.rugas.queuemanagement.entity.Token;
 import com.rugas.queuemanagement.entity.TokenStatus;
 import com.rugas.queuemanagement.repository.QueueRepository;
 import com.rugas.queuemanagement.repository.TokenRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +15,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class TokenService {
 
     private final TokenRepository tokenRepository;
     private final QueueRepository queueRepository;
+
+    public TokenService(TokenRepository tokenRepository, QueueRepository queueRepository) {
+        this.tokenRepository = tokenRepository;
+        this.queueRepository = queueRepository;
+    }
 
     @Transactional
     public TokenDtos.TokenResponse createToken(Long queueId, TokenDtos.CreateTokenRequest request) {
@@ -219,4 +222,3 @@ public class TokenService {
         return dto;
     }
 }
-

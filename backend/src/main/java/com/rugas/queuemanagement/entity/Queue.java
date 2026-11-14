@@ -1,15 +1,10 @@
 package com.rugas.queuemanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "queues")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Queue {
 
     @Id
@@ -41,6 +36,86 @@ public class Queue {
     @Column
     private LocalDateTime updatedAt;
 
+    public Queue() {
+    }
+
+    public Queue(Long id, String name, String description, String prefix, Integer currentTokenSequence, User manager, Boolean active, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.prefix = prefix;
+        this.currentTokenSequence = currentTokenSequence;
+        this.manager = manager;
+        this.active = active;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public static QueueBuilder builder() {
+        return new QueueBuilder();
+    }
+
+    public static class QueueBuilder {
+        private Long id;
+        private String name;
+        private String description;
+        private String prefix;
+        private Integer currentTokenSequence;
+        private User manager;
+        private Boolean active;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+
+        public QueueBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public QueueBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public QueueBuilder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public QueueBuilder prefix(String prefix) {
+            this.prefix = prefix;
+            return this;
+        }
+
+        public QueueBuilder currentTokenSequence(Integer currentTokenSequence) {
+            this.currentTokenSequence = currentTokenSequence;
+            return this;
+        }
+
+        public QueueBuilder manager(User manager) {
+            this.manager = manager;
+            return this;
+        }
+
+        public QueueBuilder active(Boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public QueueBuilder createdAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public QueueBuilder updatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public Queue build() {
+            return new Queue(id, name, description, prefix, currentTokenSequence, manager, active, createdAt, updatedAt);
+        }
+    }
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -60,5 +135,76 @@ public class Queue {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
-}
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public Integer getCurrentTokenSequence() {
+        return currentTokenSequence;
+    }
+
+    public void setCurrentTokenSequence(Integer currentTokenSequence) {
+        this.currentTokenSequence = currentTokenSequence;
+    }
+
+    public User getManager() {
+        return manager;
+    }
+
+    public void setManager(User manager) {
+        this.manager = manager;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+}

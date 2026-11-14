@@ -7,7 +7,6 @@ import com.rugas.queuemanagement.entity.User;
 import com.rugas.queuemanagement.repository.QueueRepository;
 import com.rugas.queuemanagement.repository.TokenRepository;
 import com.rugas.queuemanagement.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +14,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class QueueService {
 
     private final QueueRepository queueRepository;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
+
+    public QueueService(QueueRepository queueRepository, UserRepository userRepository, TokenRepository tokenRepository) {
+        this.queueRepository = queueRepository;
+        this.userRepository = userRepository;
+        this.tokenRepository = tokenRepository;
+    }
 
     @Transactional
     public QueueDtos.QueueResponse createQueue(QueueDtos.CreateQueueRequest request, String username) {
@@ -98,4 +102,3 @@ public class QueueService {
         return dto;
     }
 }
-

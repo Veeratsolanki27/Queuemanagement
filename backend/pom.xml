@@ -54,13 +54,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Lombok (Latest version with JDK 21-24+ javac support) -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.34</version>
-			<scope>provided</scope>
-		</dependency>
+
 
 		<!-- JWT for Auth -->
 		<dependency>

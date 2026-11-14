@@ -3,7 +3,6 @@ package com.rugas.queuemanagement.controller;
 import com.rugas.queuemanagement.dto.TokenDtos;
 import com.rugas.queuemanagement.service.TokenService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +10,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/queues/{queueId}/tokens")
-@RequiredArgsConstructor
 public class TokenController {
 
     private final TokenService tokenService;
+
+    public TokenController(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
 
     @PostMapping
     public ResponseEntity<TokenDtos.TokenResponse> createToken(

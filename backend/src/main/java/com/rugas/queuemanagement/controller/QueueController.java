@@ -3,7 +3,6 @@ package com.rugas.queuemanagement.controller;
 import com.rugas.queuemanagement.dto.QueueDtos;
 import com.rugas.queuemanagement.service.QueueService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +11,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/queues")
-@RequiredArgsConstructor
 public class QueueController {
 
     private final QueueService queueService;
+
+    public QueueController(QueueService queueService) {
+        this.queueService = queueService;
+    }
 
     @PostMapping
     public ResponseEntity<QueueDtos.QueueResponse> createQueue(

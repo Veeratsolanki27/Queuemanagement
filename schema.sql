@@ -62,10 +62,6 @@ CREATE TABLE `tokens` (
   CONSTRAINT `fk_tokens_queue` FOREIGN KEY (`queue_id`) REFERENCES `queues` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ==========================================================
--- Initial Sample Seed Data (For testing & interview demo)
--- Passwords are encrypted with BCrypt (password: manager123)
--- ==========================================================
 
 INSERT INTO `users` (`id`, `username`, `password`, `full_name`, `role`, `created_at`) VALUES
 (1, 'manager', '$2a$10$SlvQ5fI20vVf92b7o6Hk9evUqG5m.2vBv0rY9o9oZ3eO7Ccm20eT2', 'Operations Lead', 'ROLE_MANAGER', NOW());

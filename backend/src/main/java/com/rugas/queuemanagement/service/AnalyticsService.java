@@ -6,7 +6,6 @@ import com.rugas.queuemanagement.entity.Token;
 import com.rugas.queuemanagement.entity.TokenStatus;
 import com.rugas.queuemanagement.repository.QueueRepository;
 import com.rugas.queuemanagement.repository.TokenRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +16,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class AnalyticsService {
 
     private final TokenRepository tokenRepository;
     private final QueueRepository queueRepository;
+
+    public AnalyticsService(TokenRepository tokenRepository, QueueRepository queueRepository) {
+        this.tokenRepository = tokenRepository;
+        this.queueRepository = queueRepository;
+    }
 
     @Transactional(readOnly = true)
     public AnalyticsDto getAnalyticsDashboard() {
@@ -141,4 +144,3 @@ public class AnalyticsService {
                 .build();
     }
 }
-
