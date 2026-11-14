@@ -21,8 +21,8 @@ import { useAuth } from '../context/AuthContext';
 import { useSnackbar } from 'notistack';
 
 export const AuthPage: React.FC = () => {
-  // Default to Sign Up (tabIndex 1) so new users register first, or they can switch to Login (0)
-  const [tabIndex, setTabIndex] = useState(1);
+  // tabIndex 0 = Register, tabIndex 1 = Login
+  const [tabIndex, setTabIndex] = useState(0);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -40,21 +40,30 @@ export const AuthPage: React.FC = () => {
 
     try {
       if (tabIndex === 0) {
-        await login(username, password);
-        enqueueSnackbar('Welcome back! Logged in successfully.', { variant: 'success' });
-        navigate('/queues');
-      } else {
+        // Step 1: Registration
         if (!fullName.trim()) {
           setErrorMsg('Full name is required for registration');
           setLoading(false);
           return;
         }
-        await register(username, password, fullName);
-        enqueueSnackbar('Account created successfully! Welcome to your dashboard.', { variant: 'success' });
+        await register(username.trim(), password, fullName.trim());
+        enqueueSnackbar('Account registered successfully! Please log in with your credentials.', {
+          variant: 'success',
+        });
+        // Switch automatically to login tab so user logs in cleanly
+        setTabIndex(1);
+        setPassword('');
+      } else {
+        // Step 2: Login -> Redirect to Dashboard
+        await login(username.trim(), password);
+        enqueueSnackbar('Logged in successfully! Redirecting to dashboard...', { variant: 'success' });
         navigate('/queues');
       }
     } catch (err: any) {
-      const msg = err.response?.data?.message || err.message || 'Authentication failed. Please verify your details.';
+      const msg =
+        err.response?.data?.message ||
+        err.message ||
+        'Authentication failed. Please verify your credentials.';
       setErrorMsg(msg);
       enqueueSnackbar(msg, { variant: 'error' });
     } finally {
@@ -103,10 +112,12 @@ export const AuthPage: React.FC = () => {
               <QueueIcon fontSize="large" />
             </Box>
             <Typography variant="h5" sx={{ fontWeight: 800 }}>
-              Queue Manager Portal
+              Queue Management
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Queue Operations & Token Dispatch
+              {tabIndex === 0
+                ? 'Step 1: Register New Manager Account'
+                : 'Step 2: Sign In to Access Dashboard'}
             </Typography>
           </Box>
 
@@ -115,14 +126,12 @@ export const AuthPage: React.FC = () => {
             onChange={(_, val) => {
               setTabIndex(val);
               setErrorMsg('');
-              setUsername('');
               setPassword('');
-              setFullName('');
             }}
             variant="fullWidth"
             sx={{ mb: 3, borderBottom: 1, borderColor: 'divider' }}
           >
-            <Tab icon={<RegisterIcon />} iconPosition="start" label="Sign Up" />
+            <Tab icon={<RegisterIcon />} iconPosition="start" label="Register" />
             <Tab icon={<LoginIcon />} iconPosition="start" label="Login" />
           </Tabs>
 
@@ -137,7 +146,7 @@ export const AuthPage: React.FC = () => {
               <TextField
                 fullWidth
                 label="Full Name"
-                placeholder="e.g. John Doe"
+                placeholder="e.g. Rahul Sharma"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 margin="normal"
@@ -149,7 +158,7 @@ export const AuthPage: React.FC = () => {
             <TextField
               fullWidth
               label="Username"
-              placeholder="Choose a username"
+              placeholder="e.g. rahul123"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               margin="normal"
@@ -186,12 +195,45 @@ export const AuthPage: React.FC = () => {
               {loading ? (
                 <CircularProgress size={24} color="inherit" />
               ) : tabIndex === 0 ? (
-                'Create Manager Account'
+                'Create Account & Proceed to Login'
               ) : (
-                'Sign In as Manager'
+                'Sign In to Dashboard'
               )}
             </Button>
           </form>
+
+          {/* Quick toggle helper text */}
+          <Box sx={{ textAlign: 'center', mt: 2.5 }}>
+            <Typography variant="body2" color="text.secondary">
+              {tabIndex === 0 ? (
+                <>
+                  Already registered?{' '}
+                  <span
+                    style={{ color: '#2563eb', fontWeight: 700, cursor: 'pointer' }}
+                    onClick={() => {
+                      setTabIndex(1);
+                      setErrorMsg('');
+                    }}
+                  >
+                    Login here
+                  </span>
+                </>
+              ) : (
+                <>
+                  New here?{' '}
+                  <span
+                    style={{ color: '#2563eb', fontWeight: 700, cursor: 'pointer' }}
+                    onClick={() => {
+                      setTabIndex(0);
+                      setErrorMsg('');
+                    }}
+                  >
+                    Register new account
+                  </span>
+                </>
+              )}
+            </Typography>
+          </Box>
         </CardContent>
       </Card>
     </Box>
