@@ -11,13 +11,10 @@ export const authApi = {
     return user;
   },
 
-  register: async (username: string, password: string, fullName: string): Promise<User> => {
-    const response = await apiClient.post('/auth/register', { username, password, fullName });
-    const { token, id, role } = response.data;
-    const user: User = { id, username, fullName, role, token };
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
-    return user;
+  register: async (username: string, password: string, fullName: string): Promise<void> => {
+    // Only register the user in the database. Do NOT store token in localStorage.
+    // User must log in on the next step to obtain a token and access the dashboard.
+    await apiClient.post('/auth/register', { username, password, fullName });
   },
 
   logout: () => {
@@ -30,4 +27,3 @@ export const authApi = {
     return raw ? JSON.parse(raw) : null;
   },
 };
-

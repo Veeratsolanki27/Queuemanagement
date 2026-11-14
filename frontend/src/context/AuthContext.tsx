@@ -28,8 +28,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const register = async (username: string, password: string, fullName: string) => {
-    const registeredUser = await authApi.register(username, password, fullName);
-    setUser(registeredUser);
+    // Only registers account; user must explicitly login to get token & user state
+    await authApi.register(username, password, fullName);
   };
 
   const logout = () => {
@@ -51,4 +51,3 @@ export const useAuth = () => {
   }
   return context;
 };
-

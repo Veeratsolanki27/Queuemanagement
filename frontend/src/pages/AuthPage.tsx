@@ -40,23 +40,23 @@ export const AuthPage: React.FC = () => {
 
     try {
       if (tabIndex === 0) {
-        // Step 1: Registration
+        // STEP 1: REGISTRATION ONLY
         if (!fullName.trim()) {
           setErrorMsg('Full name is required for registration');
           setLoading(false);
           return;
         }
         await register(username.trim(), password, fullName.trim());
-        enqueueSnackbar('Account registered successfully! Please log in with your credentials.', {
+        enqueueSnackbar('Account created successfully! Now enter your password to Login.', {
           variant: 'success',
         });
-        // Switch automatically to login tab so user logs in cleanly
+        // Switch to Login tab, keep username, clear password so user explicitly logs in
         setTabIndex(1);
         setPassword('');
       } else {
-        // Step 2: Login -> Redirect to Dashboard
+        // STEP 2: LOGIN ONLY -> ONLY HERE CAN THEY ACCESS DASHBOARD
         await login(username.trim(), password);
-        enqueueSnackbar('Logged in successfully! Redirecting to dashboard...', { variant: 'success' });
+        enqueueSnackbar('Logged in successfully! Redirecting to Dashboard...', { variant: 'success' });
         navigate('/queues');
       }
     } catch (err: any) {
@@ -116,7 +116,7 @@ export const AuthPage: React.FC = () => {
             </Typography>
             <Typography variant="body2" color="text.secondary">
               {tabIndex === 0
-                ? 'Step 1: Register New Manager Account'
+                ? 'Step 1: Register New Account'
                 : 'Step 2: Sign In to Access Dashboard'}
             </Typography>
           </Box>
@@ -146,7 +146,7 @@ export const AuthPage: React.FC = () => {
               <TextField
                 fullWidth
                 label="Full Name"
-                placeholder="e.g. Rahul Sharma"
+                placeholder="e.g. John Doe"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 margin="normal"
@@ -158,7 +158,7 @@ export const AuthPage: React.FC = () => {
             <TextField
               fullWidth
               label="Username"
-              placeholder="e.g. rahul123"
+              placeholder="e.g. johndoe"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               margin="normal"
@@ -195,14 +195,14 @@ export const AuthPage: React.FC = () => {
               {loading ? (
                 <CircularProgress size={24} color="inherit" />
               ) : tabIndex === 0 ? (
-                'Create Account & Proceed to Login'
+                'Create Account & Go to Login'
               ) : (
-                'Sign In to Dashboard'
+                'Login & Enter Dashboard'
               )}
             </Button>
           </form>
 
-          {/* Quick toggle helper text */}
+          {/* Helper toggle text */}
           <Box sx={{ textAlign: 'center', mt: 2.5 }}>
             <Typography variant="body2" color="text.secondary">
               {tabIndex === 0 ? (
@@ -215,12 +215,12 @@ export const AuthPage: React.FC = () => {
                       setErrorMsg('');
                     }}
                   >
-                    Login here
+                    Go to Login
                   </span>
                 </>
               ) : (
                 <>
-                  New here?{' '}
+                  Need an account?{' '}
                   <span
                     style={{ color: '#2563eb', fontWeight: 700, cursor: 'pointer' }}
                     onClick={() => {
@@ -228,7 +228,7 @@ export const AuthPage: React.FC = () => {
                       setErrorMsg('');
                     }}
                   >
-                    Register new account
+                    Register here
                   </span>
                 </>
               )}
