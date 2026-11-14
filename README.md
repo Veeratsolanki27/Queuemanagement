@@ -8,7 +8,7 @@ Built with **Java Spring Boot 3 (Security + JPA + PostgreSQL / H2)**, **React 18
 
 ## 🚀 Live Features Implementation Checklist
 
-- [x] **1. Manager Authentication & Roles**: Managers securely register/login with JWT Bearer authentication. Pre-loaded with demo manager account (`manager` / `manager123`).
+- [x] **1. Manager Authentication & Roles**: Managers securely register/login with JWT Bearer authentication.
 - [x] **2. Queue Creation with Custom Names & Prefixes**: Create named queues with automatic or customized token prefixes (e.g. `VIP-001`, `PH-001`, `REG-001`).
 - [x] **3. Token Issuance**: Add customers/persons into queues; generates sequential tokens with customer details & service notes.
 - [x] **4. Live Queue Display**: Displays all waiting tokens with position `#1`, `#2`, wait durations, customer details, and visual alerts for next in line.

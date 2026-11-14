@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: queue-management-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    plan: free
+    region: oregon
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false # Set to your Cloud MySQL / PostgreSQL / Aiven URL
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+        value: com.mysql.cj.jdbc.Driver # or org.postgresql.Driver
+      - key: APPLICATION_SECURITY_JWT_SECRET_KEY
+        value: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970

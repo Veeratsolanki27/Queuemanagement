@@ -37,7 +37,12 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
-		<!-- Database drivers: PostgreSQL and H2 fallback for zero-friction local run/testing -->
+		<!-- Database drivers: MySQL, PostgreSQL and H2 fallback -->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
