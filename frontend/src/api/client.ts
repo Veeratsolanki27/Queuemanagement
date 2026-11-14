@@ -1,9 +1,22 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
+// When running locally on Vite (localhost:5173), target local Spring Boot (http://localhost:8080/api/v1)
+// When running in production (e.g. on Netlify), use the relative path '/api/v1' so Netlify proxies directly
+// or use the explicit VITE_API_URL if provided.
+const getBaseUrl = (): string => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // Check if browser is on localhost
+  if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+    return 'http://localhost:8080/api/v1';
+  }
+  // In production (Netlify), use relative '/api/v1'
+  return '/api/v1';
+};
 
 const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: getBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
@@ -35,4 +48,3 @@ apiClient.interceptors.response.use(
 );
 
 export default apiClient;
-
